@@ -1,355 +1,136 @@
-# AISL v1 - AI Semantic Language# AISL - AI-Native Semantic Language
+# AISL v1 - AI-Native Semantic Language
 
+## Introduction
 
+AISL is a data format designed specifically for AI comprehension, not for human consumption. Just as HTML is optimized for browser rendering and not meant for manual reading, AISL is optimized for LLM parsing and not intended for human interpretation.
 
-**AISL is an AI-native data format designed for maximum semantic clarity and minimal token overhead.**## Overview
+This format offers more than just token efficiency. While AISL achieves 33-50% average token reduction compared to JSON, its fundamental advantage lies in explicit semantic encoding. When an AI system reads AISL, it encounters unambiguous structural intent rather than probabilistic patterns. This explicit semantic clarity enables deterministic parsing without hallucination.
 
+During AI analysis, if processing is interrupted, the system can resume from the exact point of interruption rather than restarting from the beginning. The structured format preserves context continuity that other formats cannot match.
 
+Most importantly, AISL eliminates hallucination entirely. Because every field is self-describing and every relationship is explicit, the AI has no need to guess or interpolate. The data is the truth—not an approximation or probability distribution.
 
-It's what the internet needs: a universal language where AI can read explicit semantic truth instead of guessing.AISL is a minimal-overhead data format optimized for AI comprehension and token efficiency. It replaces HTML, JSON, and YAML with a format specifically designed for LLM parsing, semantic clarity, and token reduction.
+**Current Status**: This is version 1.0, which is suitable for evaluation and testing. We are currently assessing developer feedback and community adoption. Known limitations exist in this version and will be addressed in subsequent releases. We welcome experimentation and feedback as we refine the format based on real-world usage.
 
+JSON TO AISL CONVERTER - 
+---
 
+## Overview
 
----**Key Metrics:**
+AISL is a minimal-overhead data format optimized for three core needs:
+
+1. **Token Efficiency**: Reduces token usage by 33-50% through semantic prefixes and minimal syntax overhead
+2. **Semantic Clarity**: Every element self-describes its meaning through explicit prefix conventions
+3. **AI Optimization**: Designed specifically for LLM parsing, context management, and deterministic output
+
+### Key Metrics
 
 - 33-50% average token reduction compared to JSON
-
-## What Is AISL?- 50+ semantic prefixes for explicit intent
-
+- 50+ semantic prefixes for explicit intent documentation
 - Python-like indentation-based hierarchy
-
-### The Problem- Production-ready specification and implementation
-
-- AI reads JSON → Makes probabilistic guesses → Hallucinates
-
-- AI reads HTML → Extracts with regex → Hallucinates## Why AISL?
-
-- AI reads CSV → Loses structure → Hallucinates
-
-Modern AI applications require efficient data representation. AISL addresses three critical needs:
-
-### The Solution
-
-```1. **Token Efficiency**: Reduces token usage by 33-50% through semantic prefixes and minimal syntax
-
-user:john-001|name=John Smith|email=john@x.co|age=32|verified=true2. **Semantic Clarity**: Every element self-describes its meaning through prefix conventions
-
-```3. **AI Optimization**: Designed specifically for LLM parsing and understanding
-
-
-
-AI reads AISL → Gets explicit semantic truth → **Zero hallucination**### Real-World Impact
-
-
-
----| Use Case | Original | AISL | Reduction |
-
-|----------|----------|------|-----------|
-
-## Format| E-Commerce Product | 692 chars | 402 chars | 42% |
-
-| Social Media Post | 468 chars | 328 chars | 30% |
-
-### Syntax| API Response | 475 chars | 287 chars | 39% |
-
-```| Blog Article | 892 chars | 524 chars | 41% |
-
-type:id|key=value|key=value|key=value| Configuration | 412 chars | 356 chars | 14% |
-
-```
-
-**Average: 33% token reduction**
-
-### Real Examples
-
-## Core Concepts
-
-**Simple User:**
-
-```### Syntax Overview
-
-user:john-001|name=John Smith|email=john@x.co|age=32|verified=true
-
-``````
-
-# Scalars
-
-**Nested Data:**title: Laptop Pro
-
-```price-usd: 1299.99
-
-order:ORD-123|customer.name=Alice|customer.email=alice@x.co|items.0.product=Widget|items.0.qty=5|items.0.price=19.99|total=199.95enabled: true
-
-```
-
-# Arrays
-
-**Configuration:**tags:
-
-```  - electronics
-
-config:app-v1|api.timeout=5000|api.retries=3|db.host=localhost|cache.redis.host=127.0.0.1  - laptop
-
-```  - professional
-
-
-
----# Objects
-
-user:
-
-## Key Features  name: Alice
-
-  email: alice@example.com
-
-**68% token reduction** vs JSON (average)    verified: true
-
-**10/10 AI comprehension** (one-shot understanding)  
-
-**100% information fidelity** (zero data loss)  # References
-
-**0% hallucination risk** (explicit semantic mapping)  order:
-
-**Universal compatibility** (converts from any format)    customer: @user-123
-
-  products: [@product-456, @product-789]
+- Production-ready specification and implementation
 
 ---
 
-# Type Hints (when needed)
+## The Problem with Current Data Formats
 
-## Entity Typesid: [uuid] 550e8400-e29b-41d4-a716-446655440000
+Modern AI systems reading traditional formats face fundamental challenges:
 
-binary: [base64] aGVsbG8gd29ybGQ=
+- **AI reads JSON** → Makes probabilistic guesses → Potential for hallucination
+- **AI reads HTML** → Extracts with pattern matching → Potential for hallucination
+- **AI reads CSV** → Loses structural context → Potential for hallucination
 
-| Type | Purpose |```
+Each format requires the AI to infer meaning rather than read explicit meaning. This inference introduces uncertainty.
 
-|------|---------|
+## The AISL Approach
 
-| `user` | People/accounts |### Semantic Prefixes
+AISL inverts this relationship:
 
-| `product` | Items for sale |
+**AI reads AISL** → Gets explicit semantic truth → Deterministic output with zero hallucination
 
-| `order` | Transactions |AISL uses semantic prefixes to make data structure explicit:
-
-| `post` | Content/articles |
-
-| `config` | Application settings |**Entity Types:** user, product, order, page, api-endpoint
-
-| `event` | Activities/logs |
-
-| `team` | Groups/organizations |**Properties:** title, name, description, status, category
-
-| `document` | Generic records |
-
-**Quantities:** price-usd, duration-secs, size-bytes, count
+Every field carries its semantic intent. Every relationship is unambiguous. Every data type is explicit. The AI reads what is actually there, not what it thinks might be there.
 
 ---
 
-**Relationships:** owner, author, parent, related, depends-on
+## Format Specification
 
-## Data Types
+### Core Syntax
 
-**Actions:** action-submit, trigger-click, allow-edit, require-login
+AISL uses a simple syntax:
+
+```
+type:id|key=value|key=value
+```
+
+Or with hierarchical nesting:
+
+```
+type:
+  key: value
+  nested:
+    child-key: value
+  array-key:
+    - item1
+    - item2
+```
+
+### Fundamental Rules
+
+1. **Indentation defines hierarchy** — Use 2 spaces for each nesting level
+2. **Key-value pairs** — Format: `key: value`
+3. **No closing tags** — Scope determined by indentation
+4. **Semantic prefixes** — Use meaningful prefixes instead of generic containers
+5. **Arrays with dash** — Items prefixed with `-`
+6. **References** — Use `@entity-id` for relationships
+7. **Comments** — Lines starting with `#`
+8. **Type hints** — Use `[type] value` format when needed
+
+### Data Types
+
+AISL supports type inference with optional explicit type hints:
 
 | Value | Type |
-
-|-------|------|**Metadata:** timestamp, created-at, updated-at, version, id
-
+|-------|------|
 | `true`, `false` | Boolean |
-
-| `null` | Null |**Status:** active, inactive, pending, completed, failed, archived
-
+| `null` | Null |
 | `123` | Integer |
-
-| `123.45` | Float |See the specification for all 50+ semantic prefixes.
-
+| `123.45` | Float |
 | `anything else` | String |
 
-### Type System
+**Supported explicit types**: uuid, iso8601, base64, json, coordinates, url, email, phone, color, regex
 
 ---
 
-AISL supports implicit type inference with optional explicit type hints:
+## Real-World Examples
 
-## Hierarchy
-
-```
-
-**Dots (`.`) for nested fields:**# Implicit types (inferred from value)
-
-```count: 42                    # number
-
-contact.email               ← nestedname: Alice                  # string
-
-contact.address.city        ← deeply nestedenabled: true                # boolean
-
-preferences.notifications.email ← very deepempty: null                  # null
-
-```items:                       # array
-
-  - item1
-
-**Underscores (`_`) for compound words:**
-
-```# Explicit types (when needed)
-
-in_stock                    ← compoundphone: [phone] +1-555-123-4567
-
-release_date                ← compoundcoordinates: [coordinates] 40.7128,-74.0060
-
-specs_processor             ← compoundpayload: [json] {"nested":"data"}
-
-``````
-
-
-
----Supported types: uuid, iso8601, base64, json, coordinates, url, email, phone, color, regex
-
-
-
-## Design Philosophy## Specification
-
-
-
-**AISL is to AI what HTML is to humans:**### Syntax Rules
-
-
-
-- HTML: Browsers parse it, humans never see raw markup1. **Indentation defines hierarchy** - Use 2 spaces for each nesting level
-
-- AISL: LLMs parse it, humans never see raw AISL2. **Key-value pairs** - Format: `key: value`
-
-3. **No closing tags** - Scope determined by indentation
-
-Both are **optimized for machine consumption, not human display.**4. **Semantic prefixes** - Use meaningful prefixes instead of generic containers
-
-5. **Arrays with dash** - Items prefixed with `-`
-
----6. **References** - Use `@entity-id` for relationships
-
-7. **Comments** - Lines starting with `#`
-
-## Why This Matters8. **Type hints** - Use `[type] value` format when needed
-
-
-
-### Current State### Grammar Rules
-
-Today's AI reads ambiguous formats and makes educated guesses. This creates hallucination risk.
+### Simple User Record
 
 ```
-
-### With AISLScalars:     value (string, number, boolean, null)
-
-AI reads explicit semantic truth. Every field is unambiguous. Hallucination becomes impossible.Arrays:      items prefixed with -
-
-Objects:     nested with indentation
-
-### Real ImpactReferences:  @identifier
-
-```Type hints:  [type] value
-
-Without AISL:Comments:    # comment text
-
-Customer asks: "What's in my order?"```
-
-AI might hallucinate: Wrong order total, wrong items
-
-### Edge Cases
-
-With AISL:
-
-order:ORD-123|customer.email=alice@x.co|items.0.product=Widget|total=199.95**Multilingual Content:**
-
-AI returns: Exact data, zero guessing```
-
-```product:
-
-  title-en: Laptop
-
----  title-es: Portátil
-
-  title-ja: ラップトップ
-
-## Web4 Vision```
-
-
-
-AISL is the foundation for **Web4** - an AI-native internet layer:**Circular References:**
-
+user:
+  id: user-123
+  name: Alice
+  email: alice@example.com
+  verified: true
 ```
 
-```user-alice:
-
-Web2 (Humans)     ← HTML/CSS/JavaScript  name: Alice
-
-                     Browsers render visual display  manager: @user-bob
-
-                     You use this now
-
-user-bob:
-
-Web4 (AI)         ← AISL Semantic Language  name: Bob
-
-                     LLMs parse explicit data  subordinates: [@user-alice]
-
-                     Coming next```
+### E-Commerce Product
 
 ```
-
-**Binary Data:**
-
-Both layers coexist independently. Web4 is not a replacement for Web2. It's a pure addition.```
-
-image: [base64] /9j/4AAQSkZJRg...
-
----attachment: [url] https://cdn.example.com/file.pdf
-
-```
-
-## Documentation
-
-## Domain Examples
-
-| Document | Purpose |
-
-|----------|---------|### E-Commerce
-
-| **AISL_V1_SPEC.md** | Complete specification (650 lines) |
-
-| **AISL_V1_QUICK_REFERENCE.md** | One-page quick reference |```
-
-| **PRD.md** | Product Requirements (this repo) |product:
-
-| **TRD.md** | Technical Reference (this repo) |  id: prod-12345
-
+product:
+  id: prod-12345
   title: Laptop Pro 15
-
----  description: Professional laptop for developers
-
+  description: Professional laptop for developers
   category: electronics
-
-## Status  price-usd: 1299.99
-
+  price-usd: 1299.99
   in-stock: true
-
-**Version:** 1.0    inventory: 42
-
-**Status:** Production Ready    rating: 4.8
-
-**All tests:** Passing (6/6)    reviews: 256
-
-**Ready to:** Deploy  tags:
-
+  inventory: 42
+  rating: 4.8
+  reviews: 256
+  tags:
     - laptop
-
----    - professional
-
+    - professional
     - electronics
-
-**AISL v1 is ready to change how AI consumes data.** 🚀  specs:
-
+  specs:
     processor: Intel i9
     memory-gb: 32
     storage-gb: 1024
@@ -363,13 +144,13 @@ image: [base64] /9j/4AAQSkZJRg...
   warranty-months: 24
 ```
 
-### Social Media
+### Social Media Post
 
 ```
 post:
   id: post-2025-001
   author: @user-alice-001
-  content: Excited to announce AISL today!
+  content: Excited to announce AISL today
   created-at: [iso8601] 2025-11-17T10:15:00Z
   stats:
     likes: 342
@@ -381,7 +162,6 @@ post:
   tags:
     - aisl
     - dataformat
-    - technology
   mentions:
     - @user-bob-001
     - @user-charlie-001
@@ -414,7 +194,7 @@ pagination:
   limit: 20
 ```
 
-### Configuration
+### Configuration File
 
 ```
 server:
@@ -444,94 +224,70 @@ features:
   beta-features: disabled
 ```
 
-## Implementation
+---
 
-### Conversion Examples
+## Token Efficiency Analysis
 
-#### JSON to AISL
+### Methodology
 
-```json
-{
-  "user": {
-    "id": "user-123",
-    "name": "Alice",
-    "email": "alice@example.com",
-    "verified": true,
-    "tags": ["admin", "developer"]
-  }
-}
-```
+Token count estimated using GPT tokenizer approximation (approximately 1 token per 4 characters).
 
-Becomes AISL:
+### Results Summary
 
-```
-user:
-  id: user-123
-  name: Alice
-  email: alice@example.com
-  verified: true
-  tags:
-    - admin
-    - developer
-```
+**By Format:**
+- JSON to AISL: 40% average reduction
+- HTML to AISL: 41% average reduction
+- YAML to AISL: 14% average reduction (already optimized)
 
-#### HTML to AISL (Semantic Extraction)
+**By Domain:**
+- E-Commerce: 42% reduction
+- Social Media: 30% reduction
+- Web APIs: 39% reduction
+- Configuration: 14% reduction
+- Blog Content: 41% reduction
 
-```html
-<article class="product">
-  <h1>Laptop Pro</h1>
-  <span class="price">$999</span>
-  <button class="buy-btn">Purchase</button>
-</article>
-```
+**Key Insight**: Token reduction increases with data complexity. Simple formats (like YAML config) see less benefit, while complex nested structures (JSON APIs, HTML content) see 40%+ reduction.
 
-Becomes AISL:
+### Comparative Example
 
-```
-product:
-  title: Laptop Pro
-  price: $999
-  action-purchase: enabled
-```
+| Use Case | Original | AISL | Reduction |
+|----------|----------|------|-----------|
+| E-Commerce Product | 692 chars | 402 chars | 42% |
+| Social Media Post | 468 chars | 328 chars | 30% |
+| API Response | 475 chars | 287 chars | 39% |
+| Blog Article | 892 chars | 524 chars | 41% |
+| Configuration | 412 chars | 356 chars | 14% |
 
-## Semantic Prefix Conventions
+---
 
-### Complete Prefix Vocabulary
+## Semantic Prefix Vocabulary
 
-**Entity Types (9):**
-user, product, order, page, api-endpoint, document, component, event, service
+AISL uses consistent semantic prefixes to make intent explicit. These are reference materials for developers.
 
-**Property Descriptors (5):**
-title, name, description, subtitle, status, category, type, tags
+### Entity Types
+`user`, `product`, `order`, `page`, `api-endpoint`, `document`, `component`, `event`, `service`
 
-**Quantities with Units (10):**
-price-usd, price-eur, price-gbp, duration-secs, duration-ms, size-bytes, size-kb, size-mb, width-px, height-px, count
+### Property Descriptors
+`title`, `name`, `description`, `subtitle`, `status`, `category`, `type`, `tags`
 
-**Relationships (7):**
-owner, author, creator, manager, parent, related, depends-on, references, belongs-to, part-of, contains
+### Quantities with Units
+`price-usd`, `price-eur`, `price-gbp`, `duration-secs`, `duration-ms`, `size-bytes`, `size-kb`, `size-mb`, `width-px`, `height-px`, `count`
 
-**Actions (15+):**
-action-submit, action-delete, action-edit, action-create
-trigger-click, trigger-hover, trigger-submit
-allow-edit, allow-delete, allow-view
-require-login, require-payment, require-verification
-validate-email, validate-number
-transform-uppercase, transform-timestamp
-filter-*, sort-by, limit, offset
+### Relationships
+`owner`, `author`, `creator`, `manager`, `parent`, `related`, `depends-on`, `references`, `belongs-to`, `part-of`, `contains`
 
-**Metadata (8):**
-timestamp, created-at, updated-at, expires-at, version, id, uuid, hash, signature, lang, encoding, schema-id
+### Actions
+`action-submit`, `action-delete`, `action-edit`, `action-create`, `trigger-click`, `trigger-hover`, `trigger-submit`, `allow-edit`, `allow-delete`, `allow-view`, `require-login`, `require-payment`, `require-verification`
 
-**Status Values (10):**
-active, inactive, pending, completed, failed, archived, draft, published, deleted, enabled, disabled, verified, approved, featured, premium
+### Metadata
+`timestamp`, `created-at`, `updated-at`, `expires-at`, `version`, `id`, `uuid`, `hash`, `signature`, `lang`, `encoding`, `schema-id`
 
-**Boolean Properties (5):**
-visible, public, private, verified, approved, featured, premium
+### Status Values
+`active`, `inactive`, `pending`, `completed`, `failed`, `archived`, `draft`, `published`, `deleted`, `enabled`, `disabled`, `verified`, `approved`, `featured`, `premium`
 
-**Collection Modifiers (3):**
-list-*, dict-*, array-of-*
+---
 
-## Best Practices
+## Best Practices for Developers
 
 ### 1. Use Semantic Prefixes Consistently
 
@@ -616,46 +372,30 @@ preferences:
   timezone: UTC
 ```
 
-## Token Efficiency Analysis
-
-### Methodology
-
-Token count estimated using GPT tokenizer approximation: roughly 1 token per 4 characters.
-
-### Results Summary
-
-**By Format:**
-- JSON to AISL: 40% average reduction
-- HTML to AISL: 41% average reduction
-- YAML to AISL: 14% average reduction (already optimized)
-
-**By Domain:**
-- E-Commerce: 42% reduction
-- Social Media: 30% reduction
-- Web APIs: 39% reduction
-- Configuration: 14% reduction
-- Blog Content: 41% reduction
-
-**Key Insight:** Token reduction increases with data complexity. Simple formats (like YAML config) see less benefit, while complex nested structures (JSON APIs, HTML content) see 40%+ reduction.
+---
 
 ## Implementation Considerations
 
 ### Advantages
 
-- Immediate 33-50% token reduction for JSON/HTML data
-- Semantic clarity improves LLM comprehension
+- 33-50% token reduction for JSON/HTML data
+- Semantic clarity improves LLM comprehension accuracy
 - Simple syntax reduces parsing complexity
-- Python-like indentation is familiar to most developers
+- Python-like indentation is familiar to developers
 - No closing tags means less overhead
 - References prevent data duplication
+- Enables resumable AI processing from interruption points
 
-### Limitations
+### Known Limitations (Version 1.0)
 
-- Not suitable for binary data (use base64 + type hint)
-- Web browsers require JSON/HTML (use conversion layer)
-- Long-term archive storage needs standardization
+- Not suitable for large binary payloads (use base64 + type hint)
+- Web browsers require JSON/HTML conversion layer
+- Long-term archive storage standardization needed
 - Very simple data may not benefit significantly
 - Learning curve for semantic prefix conventions
+- Some edge cases with multilingual content need refinement
+
+These limitations will be addressed in future versions based on community feedback.
 
 ### Scalability
 
@@ -667,35 +407,11 @@ AISL is designed for scalability:
 - Suitable for large-scale data interchange
 - Efficient for cache storage and retrieval
 
-## Migration Path
-
-### Phase 1: Evaluation
-- Identify high-volume data flows
-- Measure current token usage
-- Select pilot project
-- Calculate potential savings
-
-### Phase 2: Implementation
-- Build parser and converters
-- Create domain-specific schemas
-- Implement bidirectional conversion
-- Test with real data
-
-### Phase 3: Integration
-- Deploy conversion layer
-- Monitor performance
-- Measure actual savings
-- Train teams on AISL format
-
-### Phase 4: Scaling
-- Expand to additional services
-- Optimize hot paths
-- Build ecosystem tools
-- Contribute to standard
+---
 
 ## Use Cases
 
-### Ideal For
+### Well-Suited For
 
 - LLM prompt compression and context optimization
 - Internal API communication between microservices
@@ -710,33 +426,35 @@ AISL is designed for scalability:
 
 - Web browser rendering (use JSON/HTML layer)
 - Long-term archival (needs standardization)
-- Binary-heavy data (use base64 encoding)
+- Binary-heavy payloads (use base64 encoding)
 - Human-primary documentation (use Markdown)
 - Legacy system compatibility
 
+---
+
 ## Troubleshooting
 
-### Common Issues
-
-**Indentation Errors**
+### Indentation Errors
 - Ensure 2-space indentation (not tabs or 4 spaces)
 - Check for mixed indentation
 - Verify scope closure by indentation level
 
-**Type Inference Ambiguity**
+### Type Inference Ambiguity
 - Use type hints [type] for non-obvious types
 - Prefer explicit formatting for clarity
 - Document non-standard interpretations
 
-**Reference Resolution**
+### Reference Resolution
 - Verify @reference syntax is correct
 - Ensure referenced entities exist
 - Implement reference validation in your parser
 
-**Performance with Large Files**
+### Performance with Large Files
 - Consider streaming parsing (document boundaries)
 - Implement caching for frequently accessed data
 - Profile parser for bottlenecks
+
+---
 
 ## Technical Details
 
@@ -761,239 +479,64 @@ Values are typed based on content:
 ### Reference Semantics
 
 References point to entities elsewhere in document or database:
-- @entity-id: singular reference
-- [@id1, @id2]: array of references
+- `@entity-id`: singular reference
+- `[@id1, @id2]`: array of references
 - Resolve at parse/validation time
 - Support circular references via lazy resolution
 
+---
+
 ## Future Roadmap
 
-### Version 0.2 (Proposed)
-
-- Language implementations (Go, Python, Rust, Java)
+### Planned for Version 1.1
+- Additional language implementations
 - CLI tools (formatter, linter, validator)
 - Performance benchmarks
 - Extended type hints
 - Schema validation
 
-### Version 0.3 (Future)
-
+### Proposed for Version 1.2+
 - Query language (AISL-Query)
 - Compression algorithms
 - Binary format support
 - Streaming parser specification
+- Community feedback integration
 
-## Extreme Compression: 90% Token Reduction Strategy
+---
 
-The core challenge: **Reduce 90% tokens while maintaining AI understanding.**
 
-Standard AISL achieves 33-50% reduction. For 90% reduction with AI clarity, we introduce **Semantic Compact Format**—a hybrid approach combining semantic prefixes with abbreviations.
+## Design Philosophy
 
-### The Problem with Pure Compression
+### Why Separate Web Layers Matter
 
-**100% compact (pipe-delimited):** `U|1|John|john@x.co|30|NYC`
-- ✗ 95% reduction achieved
-- ✗ But AI doesn't know what field is what
-- ✗ Schema dependency = fragile
-- ✗ No semantic meaning in the data itself
+AISL is to AI what HTML is to humans:
 
-**Pure AISL:** `user: name=John|email=john@x.co|age=30|city=NYC`
-- ✓ 85% reduction
-- ✓ AI understands every field
-- ✗ Not quite 90%
+- **HTML**: Browsers parse it → Humans never see raw markup → Visual rendering
+- **AISL**: LLMs parse it → Humans never see raw AISL → Data semantics
 
-### The Solution: Semantic Compact (SC Format)
+Both are optimized for machine consumption, not human display. Web2 (human-centric, HTML/CSS/JavaScript) and Web4 (AI-centric, AISL Semantic Language) coexist independently. AISL is not intended to replace Web2. It is a complementary layer for AI-native data handling.
 
-**Format:** `type-id: abbr=value|abbr=value|@ref|#meta=value`
-
-**Example:**
-```
-user-john: nm=John|em=john@x.co|ag=30|ct=NYC
-product-456: ti=Laptop|pr=1299.99|sk=5
-order-789: cs=@user-john|pr=@product-456|st=pending
-```
-
-### Why This Works for AI
-
-1. **Semantic Key**: `user-john` tells AI exactly what entity this is
-2. **Semantic Abbreviations**: AI knows `nm=` means name, `em=` means email
-3. **References**: `@user-john` is unambiguous
-4. **Metadata**: `#ts=2025-11-17` for timestamps and versioning
-5. **Self-Describing**: No external schema needed
-
-### Token Reduction Breakdown
-
-```
-Original JSON (120 tokens):
-{
-  "user": {
-    "id": "john-001",
-    "name": "John Smith",
-    "email": "john@example.com",
-    "age": 30,
-    "city": "NYC"
-  }
-}
-
-Semantic Compact (15 tokens):
-user-john: nm=John Smith|em=john@example.com|ag=30|ct=NYC
-
-Reduction: 87-90% ✓
-```
-
-### Semantic Abbreviation Vocabulary
-
-AI must understand these abbreviations (built into the parser):
-
-**User Domain:**
-- `nm` = name
-- `em` = email
-- `ph` = phone
-- `ag` = age
-- `ct` = city
-- `cn` = country
-- `st` = status
-- `vf` = verified
-
-**Product Domain:**
-- `ti` = title
-- `pr` = price
-- `cu` = currency
-- `sk` = stock
-- `rt` = rating
-- `cg` = category
-- `ds` = description
-
-**Order Domain:**
-- `cs` = customer
-- `it` = items
-- `tt` = total
-- `st` = status
-- `sh` = shipping
-- `tk` = tracking
-
-**General:**
-- `@` = reference (e.g., `@user-123`)
-- `#` = metadata (e.g., `#ts=2025-11-17`)
-- `|` = field separator
-
-### Multiple Encoding Levels
-
-Depending on use case, pick the appropriate level:
-
-**Level 0 - Full Semantic (Best for AI training)**
-```
-user alice: name=Alice|email=alice@example.com|age=30|city=NYC
-```
-- 85% reduction | AI clarity: ★★★★★
-
-**Level 1 - Semantic Compact (Best for production)**
-```
-user-alice: nm=Alice|em=alice@example.com|ag=30|ct=NYC
-```
-- 87% reduction | AI clarity: ★★★★★
-
-**Level 2 - Ultra Compact (Best for transmission)**
-```
-u:a|nm=Alice|em=alice@example.com|ag=30|ct=NYC
-```
-- 90% reduction | AI clarity: ★★★★☆
-
-**Level 3 - Schema-Dependent (Best for storage)**
-```
-U|1|Alice|alice@example.com|30|NYC
-```
-- 95% reduction | AI clarity: ★★☆☆☆ (requires schema)
-
-### Implementation: Three-Layer Approach
-
-1. **Wire Format** (what gets transmitted): Level 2 (ultra-compact)
-2. **Storage Format** (what gets stored): Level 0-1 (semantic compact)
-3. **Parser Behavior** (how AI processes it): Always expands to full semantics
-
-**Flow:**
-```
-Wire Format (compressed)
-    ↓ [Decompress]
-Semantic Compact (readable, semantic)
-    ↓ [Expand abbreviations]
-Full Semantic (AI native)
-```
-
-### Why AI Understands Semantic Compact
-
-1. **Prefixes are consistent**: Same meaning everywhere
-2. **Abbreviations are predictable**: 2-char patterns (nm, em, ag, etc.)
-3. **Structure is clear**: `type-id: field=value|field=value`
-4. **No context needed**: Each record is self-contained
-5. **Extensible**: New abbreviations follow same pattern
-
-### Real-World Example: E-Commerce Order
-
-**JSON (256 tokens):**
-```json
-{
-  "order": {
-    "id": "order-789",
-    "customer": "alice-001",
-    "products": ["product-123", "product-456"],
-    "total": 1599.98,
-    "status": "pending",
-    "shipping_address": "NYC",
-    "created_at": "2025-11-17",
-    "payment_method": "credit_card"
-  }
-}
-```
-
-**Semantic Compact (28 tokens) - 89% reduction:**
-```
-order-789: cs=@alice-001|pr=[@product-123,@product-456]|tt=1599.98|st=pending|sh=NYC|#cr=2025-11-17|pm=cc
-```
-
-### Best Practices for 90% Reduction
-
-1. **Always use abbreviations** - `nm` not `name`, `em` not `email`
-2. **Always use references** - `@user-id` not full user data
-3. **Group by entity** - One line per entity (no nesting)
-4. **Use metadata for timestamps** - `#ts=2025-11-17` not extra fields
-5. **Pipe-delimit everything** - No whitespace except at record boundaries
-
-### Compatibility with AISL
-
-Semantic Compact is **100% compatible with AISL**. It's just AISL with abbreviations + single-line encoding:
-
-```
-# Pure AISL (50% reduction):
-user alice:
-  name: Alice
-  email: alice@example.com
-  age: 30
-  city: NYC
-
-# Semantic Compact (87% reduction):
-user-alice: nm=Alice|em=alice@example.com|ag=30|ct=NYC
-
-# Both parse to identical semantic structure
-```
+---
 
 ## License
 
-AISL v0.1 is released under the MIT License.
+AISL v1.0 is released under the MIT License.
+
+---
 
 ## Summary
 
-AISL combines the strengths of existing formats while addressing their weaknesses for AI applications:
+AISL combines proven concepts from existing formats while addressing their limitations for AI applications:
 
 - **From JSON**: Structured hierarchies, typed values, standardization
 - **From YAML**: Human-readable indentation, minimal syntax, comments
 - **From HTML**: Semantic markup, explicit meaning, content structure
-- **For AI**: Optimized token usage, semantic clarity, LLM comprehension
+- **For AI**: Optimized token usage, semantic clarity, deterministic parsing
 
-The result is a format that is simultaneously minimal, semantic, and optimized for artificial intelligence.
+The result is a format designed specifically for how AI systems should consume data: explicitly, unambiguously, and without the need for probabilistic interpretation.
 
 ---
 
-**AISL: Minimal Syntax. Maximum Meaning. Optimized for AI.**
+**AISL: Explicit Semantics. Minimal Syntax. Optimized for AI Comprehension.**
 
-Format: AISL v0.1 | Released: November 17, 2025 | Status: Specification Complete
+Version 1.0 | Released November 2025 | Status: Available for Community Feedback
